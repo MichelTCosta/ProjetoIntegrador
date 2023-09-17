@@ -6,20 +6,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-  private PlayerControls controls;
-  private float moveSpeed = 6f;
+    private PlayerControls controls;
+    private float moveSpeed = 6f;
     private Vector3 velocity;
     private float gravity = -9.8f;
     private Vector2 Move;
     private float jumpHeight = 2.4f;
     private CharacterController controller;
-
     public Transform ground;
-    public float distanceToGround =  0.4f;
-    public  LayerMask  groundMask;
+    public float distanceToGround = 0.4f;
+    public LayerMask groundMask;
     private bool isGrounded;
 
-    void  Awake()
+    void Awake()
     {
         controls = new PlayerControls();
         controller = GetComponent<CharacterController>();
@@ -36,9 +35,9 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(ground.position, distanceToGround, groundMask);
 
-        if(isGrounded &&  velocity.y <0)
+        if (isGrounded && velocity.y < 0)
         {
-            velocity.y =  2f;
+            velocity.y = -2f; // Alterado de 2f para -2f
         }
 
         velocity.y += gravity * Time.deltaTime;
@@ -55,9 +54,9 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if(controls.Player.Jump.triggered)
+        if (isGrounded && controls.Player.Jump.triggered) // Verifica se o jogador está no chão antes de permitir o pulo
         {
-            velocity.y = Mathf.Sqrt(jumpHeight* -2f * gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
 
