@@ -1,22 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed;
-
     public float groundDrag;
-
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
+    public float crouchHeight = 0.5f; // Altura do jogador quando agachado
     bool readyToJump;
 
     [HideInInspector] public float walkSpeed;
-    [HideInInspector] public float sprintSpeed;
+
+    [Header("Sprint")]
+    public float sprintSpeedMultiplier = 1.5f;
+    public KeyCode sprintKey = KeyCode.LeftShift;
+    private bool isSprinting;
+
+    [Header("Crouch")]
+    public KeyCode crouchKey = KeyCode.LeftControl;
+    private bool isCrouching;
+    private Vector3 originalCenter;
+    private float originalHeight;
+    private CapsuleCollider playerCollider;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -30,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
 
     float horizontalInput;
     float verticalInput;
-
     Vector3 moveDirection;
 
     Rigidbody rb;
@@ -39,19 +47,17 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-
         readyToJump = true;
+        originalCenter = rb.centerOfMass;
+        originalHeight = playerHeight;
+        playerCollider = GetComponent<CapsuleCollider>();
     }
 
     private void Update()
     {
-        // ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
-
         MyInput();
         SpeedControl();
-
-        // handle drag
         if (grounded)
             rb.drag = groundDrag;
         else
@@ -67,38 +73,42 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        isSprinting = Input.GetKey(sprintKey);
 
-        // when to jump
-        if(Input.GetKey(jumpKey) && readyToJump && grounded)
+        if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
-
             Jump();
-
             Invoke(nameof(ResetJump), jumpCooldown);
+        }
+
+        // Agachamento
+        if (Input.GetKeyDown(crouchKey))
+        {
+            StartCrouch();
+        }
+        else if (Input.GetKeyUp(crouchKey))
+        {
+            StopCrouch();
         }
     }
 
     private void MovePlayer()
     {
-        // calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-        // on ground
-        if(grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-
-        // in air
-        else if(!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+        float currentMoveSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
+        if (isCrouching)
+            currentMoveSpeed *= 0.5f; // Reduz a velocidade ao agachar
+        if (grounded)
+            rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f, ForceMode.Force);
+        else if (!grounded)
+            rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
-        // limit velocity if needed
-        if(flatVel.magnitude > moveSpeed)
+        if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
@@ -107,13 +117,34 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        // reset y velocity
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
+
     private void ResetJump()
     {
         readyToJump = true;
+    }
+
+    private void StartCrouch()
+    {
+        if (!isCrouching)
+        {
+            isCrouching = true;
+            playerHeight = crouchHeight;
+            playerCollider.height = crouchHeight; // Altera a altura do Collider ao agachar
+            rb.centerOfMass = new Vector3(originalCenter.x, originalCenter.y - 0.25f, originalCenter.z);
+        }
+    }
+
+    private void StopCrouch()
+    {
+        if (isCrouching)
+        {
+            isCrouching = false;
+            playerHeight = originalHeight;
+            playerCollider.height = originalHeight; // Restaura a altura do Collider ao levantar
+            rb.centerOfMass = originalCenter;
+        }
     }
 }
