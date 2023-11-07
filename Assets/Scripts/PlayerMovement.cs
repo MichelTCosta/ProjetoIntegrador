@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -42,31 +43,42 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection;
 
     Rigidbody rb;
-
+    PhotonView view;
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
-        readyToJump = true;
-        originalCenter = rb.centerOfMass;
-        originalHeight = playerHeight;
-        playerCollider = GetComponent<CapsuleCollider>();
+        view = GetComponent<PhotonView>();
+  
+            rb = GetComponent<Rigidbody>();
+            rb.freezeRotation = true;
+            readyToJump = true;
+            originalCenter = rb.centerOfMass;
+            originalHeight = playerHeight;
+            playerCollider = GetComponent<CapsuleCollider>();
+        
+
+        
     }
 
     private void Update()
     {
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
-        MyInput();
-        SpeedControl();
-        if (grounded)
-            rb.drag = groundDrag;
-        else
-            rb.drag = 0;
+        if (view.IsMine)
+        {
+            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+            MyInput();
+            SpeedControl();
+            if (grounded)
+                rb.drag = groundDrag;
+            else
+                rb.drag = 0;
+        }
     }
 
     private void FixedUpdate()
     {
-        MovePlayer();
+
+            MovePlayer();
+        
+
     }
 
     private void MyInput()
