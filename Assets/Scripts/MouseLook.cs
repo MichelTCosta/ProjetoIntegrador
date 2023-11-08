@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
 
 public class MouseLook : MonoBehaviour
 {
@@ -11,18 +12,32 @@ public class MouseLook : MonoBehaviour
     private Vector2 mouseLook;
     private float  xRotation = 0f;
     private Transform playerBody;
-
+    PhotonView view;
     void Awake()
     {
-      playerBody= transform.parent;
 
-      controls = new PlayerControls();
-      Cursor.lockState = CursorLockMode.Locked;
+            view = GetComponent<PhotonView>();
+        if (view.IsMine)
+        {
+            playerBody= transform.parent;
+
+        }
+            controls = new PlayerControls();
+            Cursor.lockState = CursorLockMode.Locked;
+
+        
+
+        
+
     }
 
     void Update()
     {
-      Look();
+        if(view.IsMine)
+        {
+            Look();
+        }
+
     }
 
     private void Look()

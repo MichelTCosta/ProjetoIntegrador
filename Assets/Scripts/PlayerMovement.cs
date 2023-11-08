@@ -42,18 +42,26 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
     Vector3 moveDirection;
 
+    [SerializeField] GameObject cam;
     Rigidbody rb;
     PhotonView view;
-    private void Start()
+    private void Awake()
     {
         view = GetComponent<PhotonView>();
-  
+
+        if (view.IsMine)
+        {
+            cam.SetActive(true);
+        }
             rb = GetComponent<Rigidbody>();
-            rb.freezeRotation = true;
-            readyToJump = true;
-            originalCenter = rb.centerOfMass;
-            originalHeight = playerHeight;
             playerCollider = GetComponent<CapsuleCollider>();
+            rb.freezeRotation = true;
+            originalCenter = rb.centerOfMass;
+
+            readyToJump = true;
+            
+            originalHeight = playerHeight;
+        
         
 
         
@@ -61,16 +69,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (view.IsMine)
-        {
+
             grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
             MyInput();
             SpeedControl();
             if (grounded)
+            {
                 rb.drag = groundDrag;
+            }
+
             else
+            {
                 rb.drag = 0;
-        }
+            }
+
+        
     }
 
     private void FixedUpdate()
@@ -79,11 +92,15 @@ public class PlayerMovement : MonoBehaviour
             MovePlayer();
         
 
+        
+
     }
 
     private void MyInput()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
+        if(view.IsMine)
+        {
+ horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         isSprinting = Input.GetKey(sprintKey);
 
@@ -103,28 +120,37 @@ public class PlayerMovement : MonoBehaviour
         {
             StopCrouch();
         }
+        }
+       
     }
 
     private void MovePlayer()
     {
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-        float currentMoveSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
-        if (isCrouching)
-            currentMoveSpeed *= 0.5f; // Reduz a velocidade ao agachar
-        if (grounded)
-            rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f, ForceMode.Force);
-        else if (!grounded)
-            rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f * airMultiplier, ForceMode.Force);
+
+            moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+            float currentMoveSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
+            if (isCrouching)
+                currentMoveSpeed *= 0.5f; // Reduz a velocidade ao agachar
+            if (grounded)
+                rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f, ForceMode.Force);
+            else if (!grounded)
+                rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f * airMultiplier, ForceMode.Force);
+        
+       
     }
 
     private void SpeedControl()
     {
-        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        if(view.IsMine)
+        {
+         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         if (flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+        }
+       
     }
 
     private void Jump()
