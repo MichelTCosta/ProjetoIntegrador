@@ -8,7 +8,7 @@ public class MouseLook : MonoBehaviour
 {
   private PlayerControls controls;
 
-  private float mouseSensitivity = 100f;
+    public float mouseSensitivity = 100f;
     private Vector2 mouseLook;
     private float  xRotation = 0f;
     private Transform playerBody;
