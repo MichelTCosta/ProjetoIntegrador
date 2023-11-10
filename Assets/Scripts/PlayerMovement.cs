@@ -164,13 +164,17 @@ public class PlayerMovement : MonoBehaviour
         readyToJump = true;
     }
 
+    
     private void StartCrouch()
     {
         if (!isCrouching)
         {
             isCrouching = true;
             playerHeight = crouchHeight;
-            playerCollider.height = crouchHeight; // Altera a altura do Collider ao agachar
+            playerCollider.height = crouchHeight;
+
+            playerCollider.center = new Vector3(playerCollider.center.x, crouchHeight / 2f, playerCollider.center.z);
+
             rb.centerOfMass = new Vector3(originalCenter.x, originalCenter.y - 0.25f, originalCenter.z);
         }
     }
@@ -179,9 +183,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isCrouching)
         {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, originalHeight - crouchHeight, whatIsGround))
+            {
+                return;
+            }
+            
             isCrouching = false;
             playerHeight = originalHeight;
-            playerCollider.height = originalHeight; // Restaura a altura do Collider ao levantar
+            playerCollider.height = originalHeight; 
+
+            playerCollider.center = originalCenter;
+
             rb.centerOfMass = originalCenter;
         }
     }
