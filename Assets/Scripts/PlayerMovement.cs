@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
-    public float crouchHeight = 0.5f; // Altura do jogador quando agachado
+    public float crouchHeight; // Altura do jogador quando agachado
     bool readyToJump;
 
     [HideInInspector] public float walkSpeed;
@@ -27,12 +27,17 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 originalCenter;
     private float originalHeight;
     private CapsuleCollider playerCollider;
+    [SerializeField]
+    float crouchDistanceChecker;
+
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
     public float playerHeight;
+    [SerializeField]
+    float groundDistanceChecker;
     public LayerMask whatIsGround;
     bool grounded;
 
@@ -45,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject cam;
     Rigidbody rb;
     PhotonView view;
+    
     private void Awake()
     {
         view = GetComponent<PhotonView>();
@@ -61,16 +67,18 @@ public class PlayerMovement : MonoBehaviour
             readyToJump = true;
             
             originalHeight = playerHeight;
-        
-        
+        playerCollider.height = originalHeight;
 
-        
+        playerCollider.center = originalCenter;
+
+
+
     }
 
     private void Update()
     {
 
-            grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+            grounded = Physics.Raycast(transform.position, Vector3.down, groundDistanceChecker, whatIsGround);
             MyInput();
             SpeedControl();
             if (grounded)
@@ -100,10 +108,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if(view.IsMine)
         {
- horizontalInput = Input.GetAxisRaw("Horizontal");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-        isSprinting = Input.GetKey(sprintKey);
+            if(!isCrouching)
+            {
+                isSprinting = Input.GetKey(sprintKey);
 
+            }
+    
         if (Input.GetKey(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
@@ -116,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCrouch();
         }
-        else if (Input.GetKeyUp(crouchKey))
+        else if (Input.GetKeyUp(crouchKey) )
         {
             StopCrouch();
         }
@@ -131,6 +143,7 @@ public class PlayerMovement : MonoBehaviour
             float currentMoveSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
             if (isCrouching)
                 currentMoveSpeed *= 0.5f; // Reduz a velocidade ao agachar
+               
             if (grounded)
                 rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f, ForceMode.Force);
             else if (!grounded)
@@ -183,12 +196,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isCrouching)
         {
+            
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, originalHeight - crouchHeight, whatIsGround))
+            if (Physics.Raycast(transform.position, Vector3.up, out hit, crouchDistanceChecker, whatIsGround))
             {
+                Debug.Log("Acerto");
                 return;
             }
-            
+ 
             isCrouching = false;
             playerHeight = originalHeight;
             playerCollider.height = originalHeight; 
