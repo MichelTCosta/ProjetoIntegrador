@@ -347,7 +347,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 64
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &684146073227603321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,10 +370,10 @@ MonoBehaviour:
   sprintSpeedMultiplier: 2.5
   sprintKey: 304
   crouchKey: 306
-  crouchDistanceChecker: 0
+  crouchDistanceChecker: 1.82
   jumpKey: 32
   playerHeight: 1.82
-  groundDistanceChecker: 0
+  groundDistanceChecker: 0.1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -438,7 +438,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684146073227603326}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 15659eaaf0239d64f8a33bbc6cd111d2, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.35
@@ -535,7 +535,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 684146074507373431}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.004, y: 1.54, z: 0}
+  m_LocalPosition: {x: 0.004, y: 1.54, z: 0.096}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

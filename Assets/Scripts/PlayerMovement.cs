@@ -37,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight;
     [SerializeField]
+    GameObject groundChecker;
+    [SerializeField]
     float groundDistanceChecker;
     public LayerMask whatIsGround;
     bool grounded;
@@ -200,7 +202,7 @@ public class PlayerMovement : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, Vector3.up, out hit, crouchDistanceChecker, whatIsGround))
             {
-                Debug.Log("Acerto");
+                
                 return;
             }
  
