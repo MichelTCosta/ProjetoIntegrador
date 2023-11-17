@@ -19,6 +19,8 @@ public class Charactermanager : MonoBehaviour
     public int playerInServer;
     public bool isOnGame;
 
+    public List<GameObject> playerList;//Lista de gameobjects dos jogadores
+
     // Start is called before the first frame update
     void Awake()
     {
