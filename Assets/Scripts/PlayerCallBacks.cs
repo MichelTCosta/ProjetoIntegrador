@@ -16,9 +16,5 @@ public class PlayerCallBacks : MonoBehaviourPunCallbacks
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

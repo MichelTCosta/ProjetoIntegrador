@@ -24,7 +24,7 @@ public class MonsterBasics : MonoBehaviour
         if (getKey)//Checa se uma chave foi pega
         {
             getKey = false;
-            animator.SetTrigger("GetAKey");
+            animator.SetTrigger("GetAKey"); //ativa um trigger no animator que faz com que o monstro entre em modo enfurecido
         }
     }
 }

@@ -40,8 +40,8 @@ public class Charactermanager : MonoBehaviour
 
         if(isOnGame == false) //checa se os jogadores ja estão em jogo e para de pegar informaçoes que nao sao mais necessarias
         {
-            PhotonNetwork.NickName = nome.text;
-            boneco = character.options[character.value].text;
+            PhotonNetwork.NickName = nome.text; // atribui o nome a o jogador
+            boneco = character.options[character.value].text; //atribui o personagem escolhido 
         }
 
 

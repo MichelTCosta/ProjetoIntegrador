@@ -19,7 +19,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public void CreateRoom() //Cria a sala
     {
-        RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 4, IsOpen = true };
+        RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 4, IsOpen = true }; //configurações da sala
         PhotonNetwork.CreateRoom(roomInputField.text, roomOptions);
 
     }

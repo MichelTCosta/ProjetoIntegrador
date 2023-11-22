@@ -13,12 +13,7 @@ public class PlayerSettings : MonoBehaviour
     [SerializeField]
     Slider slider;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        
 
-    }
 
     // Update is called once per frame
     void Update()
@@ -26,7 +21,7 @@ public class PlayerSettings : MonoBehaviour
         if (view.IsMine)
         {
 
-            cam.GetComponent<MouseLook>().mouseSensitivity = slider.value;
+            cam.GetComponent<MouseLook>().mouseSensitivity = slider.value; //coloca o valor da sensibilidade da camera igual o valor do slider no menu de opçoes
 
 
         }

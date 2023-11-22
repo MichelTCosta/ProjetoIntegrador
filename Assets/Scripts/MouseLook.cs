@@ -9,8 +9,8 @@ public class MouseLook : MonoBehaviour
   private PlayerControls controls;
 
     KeyBinding keyBinding;
-    public float mouseSensitivity = 100f;
-    private Vector2 mouseLook;
+    public float mouseSensitivity = 100f; 
+    private Vector2 mouseLook; 
     private float  xRotation = 0f;
     private Transform playerBody;
     PhotonView view;
@@ -21,10 +21,10 @@ public class MouseLook : MonoBehaviour
         if (view.IsMine)
         {
             playerBody= transform.parent;
-            keyBinding = GetComponentInParent<KeyBinding>();
+            keyBinding = GetComponentInParent<KeyBinding>(); // pega referencia de outro script
 
             controls = new PlayerControls();
-          Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 

@@ -25,10 +25,6 @@ public class MonsterRageMode : StateMachineBehaviour
         rageCounter = rageTimer;
     }
 
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-
-    }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -66,13 +62,5 @@ public class MonsterRageMode : StateMachineBehaviour
 
     }
 
-    override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
 
-    }
-
-    override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-
-    }
 }

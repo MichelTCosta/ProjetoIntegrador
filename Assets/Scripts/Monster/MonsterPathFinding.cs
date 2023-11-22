@@ -23,7 +23,7 @@ public class MonsterPathFinding : MonoBehaviour
     float distanceToCatch;
 
     Animator animator;
-    int numberOfKeys;
+    int numberOfKeys; //Numero de chaves pegas pelos players
     // Start is called before the first frame update
     void Awake()
     {
@@ -69,9 +69,9 @@ public class MonsterPathFinding : MonoBehaviour
     {
         if (switchTarget <= 0)
         {
-            switchTarget = switchTargetTime;
-            int playersInServer = PhotonNetwork.PlayerList.Length;
-            target = Random.Range(0, playersInServer);
+            switchTarget = switchTargetTime; 
+            int playersInServer = PhotonNetwork.PlayerList.Length; //pega o numero de player conectados na sala
+            target = Random.Range(0, playersInServer); // escolhe aleatoriamente um novo jogador
 
         }
         if (switchTarget > 0)

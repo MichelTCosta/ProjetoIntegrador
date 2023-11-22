@@ -8,11 +8,11 @@ public class KeyBinding : MonoBehaviour
 
     PhotonView view;
     [SerializeField]
-    GameObject optionsCanvas;
+    GameObject optionsCanvas; // refencia para o canvas de opçoes
     [SerializeField]
-    GameObject canvasHUD;
+    GameObject canvasHUD; //referencia para o canvas de HUD
 
-    [HideInInspector]public bool isSettingsActive;
+    [HideInInspector]public bool isSettingsActive; // Variavel para saber se a HUD de opçoes está ativa ou não
     
     // Start is called before the first frame update
     void Awake()
@@ -31,9 +31,9 @@ public class KeyBinding : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape))
             {
 
-                isSettingsActive = !isSettingsActive;
+                isSettingsActive = !isSettingsActive; //Da um toggle no bool
 
-                if(isSettingsActive)
+                if(isSettingsActive) //Checa se o boleano esta ativo e ativa o menu de opçoes e desativa o HUD
                 {
 
                     Cursor.visible = true;
@@ -43,7 +43,7 @@ public class KeyBinding : MonoBehaviour
                 }
 
 
-                if (isSettingsActive == false)
+                if (isSettingsActive == false)// Checa se o boleano não estiver ativo desativa o menu de opções e ativa o HUD
                 {
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Locked;
