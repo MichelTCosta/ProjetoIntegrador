@@ -11,13 +11,15 @@ public class Charactermanager : MonoBehaviour
     public TMP_Dropdown character;
     public TMP_InputField nome;
 
-
+    
     //Variaveis
     public string boneco;
     public string nick;
 
     public int playerInServer;
     public bool isOnGame;
+    
+    
 
     public List<GameObject> playerList;//Lista de gameobjects dos jogadores
 
@@ -25,6 +27,7 @@ public class Charactermanager : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+     
     }
 
     // Update is called once per frame
@@ -40,6 +43,7 @@ public class Charactermanager : MonoBehaviour
             PhotonNetwork.NickName = nome.text;
             boneco = character.options[character.value].text;
         }
+
 
     }
 }

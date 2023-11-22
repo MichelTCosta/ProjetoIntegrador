@@ -7,14 +7,25 @@ public class PlayerMisc : MonoBehaviour
 {
     public GameObject jumpScareCam;
     public GameObject normalCam;
+    [SerializeField]
+    GameObject canvasOptions;
+    [SerializeField]
+    GameObject canvasHUD;
     public bool isDead;
     PhotonView view;
     Rigidbody rb;
+
     // Start is called before the first frame update
     void Awake()
     {
         view = GetComponentInParent<PhotonView>();
-        rb = GetComponent<Rigidbody>();
+        if (view.IsMine)
+        {
+
+            rb = GetComponent<Rigidbody>();
+
+        }
+        
     }
 
     // Update is called once per frame
@@ -31,6 +42,7 @@ public class PlayerMisc : MonoBehaviour
             rb.isKinematic = true;
             isDead = true;
 
+
         }
 
     }
@@ -41,7 +53,12 @@ public class PlayerMisc : MonoBehaviour
 
             jumpScareCam.SetActive(false);
             normalCam.SetActive(true);
+
+            
         }
 
     }
+
+
+
 }

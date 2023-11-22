@@ -18,6 +18,9 @@ public class MonsterPathFinding : MonoBehaviour
     float switchTargetTime = 15f;
     float switchTarget;
 
+    [Header("Distancia para pegar o player")]
+    [SerializeField]
+    float distanceToCatch;
 
     Animator animator;
     int numberOfKeys;
@@ -82,7 +85,7 @@ public class MonsterPathFinding : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, players[target].transform.position); //checa a distancia entre o monstro e os jogadores
 
-        if (distance <= 2f && players[target].GetComponent<PlayerMisc>().isDead == false)//checa se a distacia for perto o suficiente e o jogador nao estiver morto e depois da um jumpscare
+        if (distance <= distanceToCatch && players[target].GetComponent<PlayerMisc>().isDead == false)//checa se a distacia for perto o suficiente e o jogador nao estiver morto e depois da um jumpscare
         {
             
             players[target].GetComponent<PlayerMisc>().JumpScare();//chama a funcao de jumpscare de dentro do script do player

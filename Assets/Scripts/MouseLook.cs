@@ -8,6 +8,7 @@ public class MouseLook : MonoBehaviour
 {
   private PlayerControls controls;
 
+    KeyBinding keyBinding;
     public float mouseSensitivity = 100f;
     private Vector2 mouseLook;
     private float  xRotation = 0f;
@@ -20,10 +21,12 @@ public class MouseLook : MonoBehaviour
         if (view.IsMine)
         {
             playerBody= transform.parent;
+            keyBinding = GetComponentInParent<KeyBinding>();
 
-        }
             controls = new PlayerControls();
-            Cursor.lockState = CursorLockMode.Locked;
+          Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         
 
@@ -33,7 +36,7 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        if(view.IsMine)
+        if(view.IsMine && keyBinding.isSettingsActive == false)
         {
             Look();
         }

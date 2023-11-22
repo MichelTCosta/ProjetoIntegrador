@@ -11,6 +11,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public TMP_InputField roomInputField;
 
 
+
     private void Awake()
     {
 
@@ -18,14 +19,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public void CreateRoom() //Cria a sala
     {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
+        RoomOptions roomOptions = new RoomOptions() { IsVisible = false, MaxPlayers = 4, IsOpen = true };
         PhotonNetwork.CreateRoom(roomInputField.text, roomOptions);
 
     }
 
     public void JoinRoom() //Conecta a uma sala criada
     {
+
         PhotonNetwork.JoinRoom(roomInputField.text);
 
     }
