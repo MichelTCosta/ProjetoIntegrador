@@ -56,4 +56,11 @@ public class KeyBinding : MonoBehaviour
             }
         }
     }
+
+
+
+    public void ToggleSettingsActive()
+    {
+        isSettingsActive = !isSettingsActive;
+    }
 }

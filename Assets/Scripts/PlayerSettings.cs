@@ -27,4 +27,11 @@ public class PlayerSettings : MonoBehaviour
         }
             
     }
+
+
+    public void DisableMouse()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+    }
 }
