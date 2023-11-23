@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Photon.Realtime;
 public class WaitingRoomManager : MonoBehaviour
 {
     //Referencias
@@ -56,6 +56,7 @@ public class WaitingRoomManager : MonoBehaviour
 
     public void StartGame() //void para usar no botão dentro do jogo
     {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         view.RPC("LoadGame", RpcTarget.All); //Força a execução da função para todos os jogadores
 
     }
