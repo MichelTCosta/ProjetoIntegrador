@@ -39,7 +39,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95cc47a3cf0a8b14087b1211f5a137f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   moveSpeed: 1
 --- !u!1101 &-3594184206118760703
 AnimatorStateTransition:
@@ -78,7 +77,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d509473096d1b245a2ef4cd51cac743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   moveSpeed: 5
   infiniteRage: 0
   rageTimer: 60
@@ -236,7 +234,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d509473096d1b245a2ef4cd51cac743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   moveSpeed: 6
   infiniteRage: 0
   rageTimer: 120
@@ -252,7 +249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d509473096d1b245a2ef4cd51cac743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   moveSpeed: 7
   infiniteRage: 0
   rageTimer: 180
@@ -293,7 +289,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d509473096d1b245a2ef4cd51cac743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
   moveSpeed: 8
   infiniteRage: 1
   rageTimer: 0

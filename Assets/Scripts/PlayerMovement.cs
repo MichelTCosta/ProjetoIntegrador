@@ -5,214 +5,181 @@ using Photon.Pun;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement")]
-    public float moveSpeed;
-    public float groundDrag;
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airMultiplier;
-    public float crouchHeight; // Altura do jogador quando agachado
-    bool readyToJump;
 
-    [HideInInspector] public float walkSpeed;
 
-    [Header("Sprint")]
-    public float sprintSpeedMultiplier = 1.5f;
-    public KeyCode sprintKey = KeyCode.LeftShift;
-    private bool isSprinting;
+    [Header("Movement Settings")]
 
-    [Header("Crouch")]
-    public KeyCode crouchKey = KeyCode.LeftControl;
-    private bool isCrouching;
-    private Vector3 originalCenter;
-    private float originalHeight;
-    private CapsuleCollider playerCollider;
     [SerializeField]
-    float crouchDistanceChecker;
+    float crouchSpeed;
 
-
-    [Header("Keybinds")]
-    public KeyCode jumpKey = KeyCode.Space;
-
-    [Header("Ground Check")]
-    public float playerHeight;
     [SerializeField]
-    GameObject groundChecker;
+    float walkSpeed = 6f;
+
     [SerializeField]
-    float groundDistanceChecker;
-    public LayerMask whatIsGround;
-    bool grounded;
+    float runSpeed = 12f;
 
-    public Transform orientation;
+    [SerializeField]
+    float jumpPower = 7f;
 
-    float horizontalInput;
-    float verticalInput;
-    Vector3 moveDirection;
+    [SerializeField]
+    float gravity = 10f;
 
-    [SerializeField] GameObject cam;
-    Rigidbody rb;
+    public bool canMove = true;
+
+    bool isRunning;
+
+
+
+    [Header("Crouch Settings")]
+
+    [SerializeField]
+    float crouchHeight;
+
+    [SerializeField]
+    float croucYHeight;
+
+    [SerializeField]
+    LayerMask whatIsGround;
+
+    [SerializeField]
+    float roofDetectionDistance;
+
+    float baseHeight = 1.93f;
+    float baseYHeight = 0.93f;
+    bool isCrouch;
+
+
+
+    [Header("Camera")]
+    [SerializeField]
+    GameObject activateCamera;
+
+    public Camera playerCamera;
+
+    [SerializeField]
+    float lookSpeed = 2f;
+
+    [SerializeField]
+    float lookXLimit = 45f;
+
+    [SerializeField]
+    GameObject crouchCameraPos;
+    [SerializeField]
+    GameObject normalCameraPos;
+
+    float rotationX = 0;
+    Vector3 moveDirection = Vector3.zero;
+
+
+
+
+    //Refencias
     PhotonView view;
-    
-    private void Awake()
+    CharacterController characterController;
+    void Awake()
     {
         view = GetComponent<PhotonView>();
 
         if (view.IsMine)
         {
-            cam.SetActive(true);
+
+            characterController = GetComponent<CharacterController>();
+            activateCamera.SetActive(true);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
-            rb = GetComponent<Rigidbody>();
-            playerCollider = GetComponent<CapsuleCollider>();
-            rb.freezeRotation = true;
-            originalCenter = rb.centerOfMass;
-
-            readyToJump = true;
-            
-            originalHeight = playerHeight;
-        playerCollider.height = originalHeight;
-
-        playerCollider.center = originalCenter;
-
-
 
     }
 
-    private void Update()
+    void Update()
     {
-
-            grounded = Physics.Raycast(transform.position, Vector3.down, groundDistanceChecker, whatIsGround);
-            MyInput();
-            SpeedControl();
-            if (grounded)
-            {
-                rb.drag = groundDrag;
-            }
-
-            else
-            {
-                rb.drag = 0;
-            }
-
-        
-    }
-
-    private void FixedUpdate()
-    {
-
-            MovePlayer();
-        
-
-        
-
-    }
-
-    private void MyInput()
-    {
-        if(view.IsMine)
+        if (view.IsMine)
         {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
-            if(!isCrouching)
-            {
-                isSprinting = Input.GetKey(sprintKey);
+            Crouch();
 
-            }
-    
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
-        {
-            readyToJump = false;
-            Jump();
-            Invoke(nameof(ResetJump), jumpCooldown);
-        }
 
-        // Agachamento
-        if (Input.GetKeyDown(crouchKey))
-        {
-            StartCrouch();
-        }
-        else if (Input.GetKeyUp(crouchKey) )
-        {
-            StopCrouch();
-        }
-        }
+           #region Handles Movment
+           Vector3 forward = transform.TransformDirection(Vector3.forward);
+           Vector3 right = transform.TransformDirection(Vector3.right);
+
+           // Press Left Shift to run
+           if(isCrouch == false)
+           {
+
+               isRunning = Input.GetKey(KeyCode.LeftShift);
+           }
+               float curSpeedX = canMove ? (isRunning ? runSpeed: isCrouch ? crouchSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
+               float curSpeedY = canMove ? (isRunning ? runSpeed: isCrouch ? crouchSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+               float movementDirectionY = moveDirection.y;
+               moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+           #endregion
+
+           #region Handles Jumping
+           if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+           {
+               moveDirection.y = jumpPower;
+           }
+           else
+           {
+               moveDirection.y = movementDirectionY;
+           }
+
+           if (!characterController.isGrounded)
+           {
+               moveDirection.y -= gravity * Time.deltaTime;
+           }
+
+           #endregion
+
+           #region Handles Rotation
+           characterController.Move(moveDirection * Time.deltaTime);
+
+           if (canMove)
+           {
+               rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+               rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+               playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+               transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+           }
+
+
+           #endregion
+
+           }
        
+
+
+
+
+
     }
 
-    private void MovePlayer()
+
+
+
+    void Crouch() 
     {
 
-            moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-            float currentMoveSpeed = isSprinting ? moveSpeed * sprintSpeedMultiplier : moveSpeed;
-            if (isCrouching)
-                currentMoveSpeed *= 0.5f; // Reduz a velocidade ao agachar
-               
-            if (grounded)
-                rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f, ForceMode.Force);
-            else if (!grounded)
-                rb.AddForce(moveDirection.normalized * currentMoveSpeed * 10f * airMultiplier, ForceMode.Force);
-        
-       
-    }
 
-    private void SpeedControl()
-    {
-        if(view.IsMine)
+            bool hit = Physics.Raycast(transform.position, Vector3.up, roofDetectionDistance ,whatIsGround);
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-         Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        if (flatVel.magnitude > moveSpeed)
+            playerCamera.transform.position = crouchCameraPos.transform.position;
+            isCrouch = true;
+            characterController.height = crouchHeight;
+            characterController.center = new Vector3(0, croucYHeight, 0);
+        }
+
+
+
+        if (Input.GetKeyUp(KeyCode.LeftControl) && hit == false)
         {
-            Vector3 limitedVel = flatVel.normalized * moveSpeed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            playerCamera.transform.position = normalCameraPos.transform.position;
+            isCrouch = false;
+            characterController.height = baseHeight;
+            characterController.center = new Vector3(0, baseYHeight, 0);
         }
-        }
-       
-    }
 
-    private void Jump()
-    {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-    }
-
-    private void ResetJump()
-    {
-        readyToJump = true;
-    }
-
-    
-    private void StartCrouch()
-    {
-        if (!isCrouching)
-        {
-            isCrouching = true;
-            playerHeight = crouchHeight;
-            playerCollider.height = crouchHeight;
-
-            playerCollider.center = new Vector3(playerCollider.center.x, crouchHeight / 2f, playerCollider.center.z);
-
-            rb.centerOfMass = new Vector3(originalCenter.x, originalCenter.y - 0.25f, originalCenter.z);
-        }
-    }
-
-    private void StopCrouch()
-    {
-        if (isCrouching)
-        {
-            
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.up, out hit, crouchDistanceChecker, whatIsGround))
-            {
-                
-                return;
-            }
- 
-            isCrouching = false;
-            playerHeight = originalHeight;
-            playerCollider.height = originalHeight; 
-
-            playerCollider.center = originalCenter;
-
-            rb.centerOfMass = originalCenter;
-        }
     }
 }

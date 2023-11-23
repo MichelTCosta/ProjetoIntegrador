@@ -9,6 +9,7 @@ public class MonsterPathFinding : MonoBehaviour
     Charactermanager manager;
     NavMeshAgent agent; //usando para o monstro encontrar o caminho
 
+    [SerializeField]
     List<GameObject> players; // referencias paras os players
     PhotonView view; //Componente do photon que sincroniza os clientes dos jogadores
     int target;
@@ -51,7 +52,7 @@ public class MonsterPathFinding : MonoBehaviour
 
             agent.SetDestination(players[target].gameObject.transform.position); //coloca um destino de pathfinding para o monstro
         }
-        if (players[target].GetComponent<PlayerMisc>().isDead == true && numberOfKeys >= 4) //checa se o player que o monstro está perseguindo morreu e se estiver morto e o monstro estiver no lvl4 irá atras de outro direto
+        if (players[target].GetComponent<PlayerMisc>().isDead == true ) //checa se o player que o monstro está perseguindo morreu e se estiver morto e o monstro estiver no lvl4 irá atras de outro direto
         {
             int playersInServer = PhotonNetwork.PlayerList.Length;
             target = Random.Range(0, playersInServer);

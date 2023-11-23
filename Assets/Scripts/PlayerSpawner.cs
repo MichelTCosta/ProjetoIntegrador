@@ -23,10 +23,12 @@ public class PlayerSpawner : MonoBehaviour
         if(manager.boneco == "Homem")
         {
             PhotonNetwork.Instantiate(prefabHomem.name, this.transform.position, Quaternion.identity);
+            
         }
         if(manager.boneco == "Mulher")
         {
-            PhotonNetwork.Instantiate(prefabMulher.name, this.transform.position, Quaternion.identity);
+           PhotonNetwork.Instantiate(prefabMulher.name, this.transform.position, Quaternion.identity);
+           
         }
     }
 

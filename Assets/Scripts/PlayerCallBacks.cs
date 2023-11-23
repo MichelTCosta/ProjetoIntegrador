@@ -10,8 +10,8 @@ public class PlayerCallBacks : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Awake()
     {
-        manager = GameObject.FindObjectOfType<Charactermanager>();
-        manager.playerList.Add(gameObject);
+       manager = GameObject.FindObjectOfType<Charactermanager>();
+       manager.playerList.Add(gameObject);
 
 
     }

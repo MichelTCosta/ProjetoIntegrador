@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class PlayerMisc : MonoBehaviour
 {
+    PlayerMovement playerMovement;
+
     public GameObject jumpScareCam;
     public GameObject normalCam;
 
@@ -18,7 +20,7 @@ public class PlayerMisc : MonoBehaviour
 
     public bool isDead;
     PhotonView view;
-    Rigidbody rb;
+
     Charactermanager manager;
     // Start is called before the first frame update
     void Awake()
@@ -27,8 +29,7 @@ public class PlayerMisc : MonoBehaviour
         if (view.IsMine)
         {
             manager = GameObject.FindObjectOfType<Charactermanager>();
-            rb = GetComponent<Rigidbody>();
-
+            playerMovement = GetComponent<PlayerMovement>();
         }
         
     }
@@ -39,9 +40,8 @@ public class PlayerMisc : MonoBehaviour
         {
             normalCam.SetActive(false); //desabilita camera normal
             jumpScareCam.SetActive(true); //ativa a camera de jumpscare
-            rb.isKinematic = true; //trava o jogador no lugar
-            isDead = true; 
-
+            playerMovement.canMove = false; //Trava a movimentação do jogador
+            isDead = true; //Refencia para poder reviver o jogador
 
         }
 

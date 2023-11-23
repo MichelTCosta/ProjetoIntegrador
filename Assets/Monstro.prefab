@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa9827407f7bf1842bedb9155e2783d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  players: []
   switchTargetTime: 10
   distanceToCatch: 2
 --- !u!114 &3497008127082332837
