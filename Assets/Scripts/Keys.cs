@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Keys : MonoBehaviour
 {
-    
+    public bool keys;
+
 
     // Start is called before the first frame update
     void Start()
@@ -18,13 +19,5 @@ public class Keys : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            //Fazer player receber a chave
 
-            Destroy(gameObject);
-        }
-    }
 }

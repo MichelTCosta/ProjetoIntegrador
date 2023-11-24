@@ -105,8 +105,8 @@ public class PlayerMovement : MonoBehaviour
            // Press Left Shift to run
            if(isCrouch == false)
            {
-
                isRunning = Input.GetKey(KeyCode.LeftShift);
+
            }
                float curSpeedX = canMove ? (isRunning ? runSpeed: isCrouch ? crouchSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
                float curSpeedY = canMove ? (isRunning ? runSpeed: isCrouch ? crouchSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;

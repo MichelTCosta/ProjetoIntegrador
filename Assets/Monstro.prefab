@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 3497008127082332836}
   - component: {fileID: 3497008127082332838}
   - component: {fileID: 531848070564527650}
+  - component: {fileID: 3188423560430206471}
   m_Layer: 0
   m_Name: Monstro
   m_TagString: Untagged
@@ -139,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
-  switchTargetTime: 10
+  switchTargetTime: 180
   distanceToCatch: 2
 --- !u!114 &3497008127082332837
 MonoBehaviour:
@@ -215,3 +216,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   getKey: 0
   numberOfKeys: 0
+--- !u!135 &3188423560430206471
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3497008127082332765}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.78
+  m_Center: {x: 0, y: 0, z: 0}

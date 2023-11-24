@@ -16,12 +16,11 @@ public class MonsterPathFinding : MonoBehaviour
 
     [Header("Timer de troca de alvo")]
     [SerializeField]
-    float switchTargetTime = 15f;
+    float switchTargetTime = 180f;
     float switchTarget;
 
     [Header("Distancia para pegar o player")]
-    [SerializeField]
-    float distanceToCatch;
+
 
     Animator animator;
     int numberOfKeys; //Numero de chaves pegas pelos players
@@ -32,6 +31,7 @@ public class MonsterPathFinding : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         manager = GameObject.FindObjectOfType<Charactermanager>();
         animator = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -41,22 +41,23 @@ public class MonsterPathFinding : MonoBehaviour
         players = manager.playerList; //lista de jogadores em gameobjects
         view.RPC("FollowPlayer", RpcTarget.All); //Executa a função para todos os jogadores
         ChoosePlayer();
-        JumpScare();
+
+
     }
 
     [PunRPC]
     void FollowPlayer() //Função que faz o monstro checar se a posição do jogador mudou e avançar para a nova posição
     {
-        if (players[target].GetComponent<PlayerMisc>().isDead == false)//checa se o jogador está morto se não estiver continua perseguindo ele
-        {
-
-            agent.SetDestination(players[target].gameObject.transform.position); //coloca um destino de pathfinding para o monstro
-        }
         if (players[target].GetComponent<PlayerMisc>().isDead == true ) //checa se o player que o monstro está perseguindo morreu e se estiver morto e o monstro estiver no lvl4 irá atras de outro direto
         {
             int playersInServer = PhotonNetwork.PlayerList.Length;
             target = Random.Range(0, playersInServer);
-            return;
+
+        }
+        if (players[target].GetComponent<PlayerMisc>().isDead == false)//checa se o jogador está morto se não estiver continua perseguindo ele
+        {
+
+            agent.SetDestination(players[target].gameObject.transform.position); //coloca um destino de pathfinding para o monstro
         }
 
 
@@ -73,6 +74,7 @@ public class MonsterPathFinding : MonoBehaviour
             switchTarget = switchTargetTime; 
             int playersInServer = PhotonNetwork.PlayerList.Length; //pega o numero de player conectados na sala
             target = Random.Range(0, playersInServer); // escolhe aleatoriamente um novo jogador
+            
 
         }
         if (switchTarget > 0)
@@ -82,24 +84,21 @@ public class MonsterPathFinding : MonoBehaviour
 
     }
 
-    void JumpScare()//da um jumpscare dependendo da distacia do jogador
+   
+
+    private void OnTriggerEnter(Collider other)
     {
-        float distance = Vector3.Distance(transform.position, players[target].transform.position); //checa a distancia entre o monstro e os jogadores
-
-        if (distance <= distanceToCatch && players[target].GetComponent<PlayerMisc>().isDead == false)//checa se a distacia for perto o suficiente e o jogador nao estiver morto e depois da um jumpscare
+        if(other.CompareTag("Player") && other.GetComponent<PlayerMisc>().isDead == false)
         {
-            
-            players[target].GetComponent<PlayerMisc>().JumpScare();//chama a funcao de jumpscare de dentro do script do player
-            if(numberOfKeys < 4)//checa se o monstro esta no ultimo nivel e se nao estiver faz ele se acalmar depois de pegar um jogador
+            other.GetComponent<PlayerMisc>().JumpScare();
+            if( numberOfKeys < 4)
             {
-                animator.SetTrigger("EnterCalmMode");//troca o modo do monstro
+                animator.SetTrigger("EnterCalmMode");
             }
-
-
-
-
-
-
         }
     }
+
+
+
+
 }
