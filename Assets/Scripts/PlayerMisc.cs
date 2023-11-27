@@ -169,23 +169,31 @@ public class PlayerMisc : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //Cria um raycast na posição do mouse
             RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.transform.CompareTag("Key") == true) // Checa se o raycast acertou uma chave(pode ser trocado para item se necessario)
+             
+
+               if (hit.transform.tag != "Key") //Checa se o raycast encontrou a chave
+               {
+                    dot.enabled = false; // Desabilita o ponto central
+               }
+
+
+
+                if (hit.collider.tag == "Key" && Physics.Raycast(ray, out hit, 2f)) // Checa se o raycast acertou uma chave(pode ser trocado para item se necessario)
                 {
                     dot.enabled = true; //Ativa o ponto central da tela
                     if (Input.GetKeyDown(KeyCode.E))
                     {
+                        Debug.Log("Works");
                         view.RPC("KeyGotten", RpcTarget.All); //Chave uma função para todos os jogadores
                         PhotonNetwork.Destroy(hit.transform.gameObject); // Destroi o objeto pego
                     }
 
                 }
 
-                if (hit.transform.CompareTag("Key") == false) //Checa se o raycast encontrou a chave
-                {
-                    dot.enabled = false; // Desabilita o ponto central
-                }
+
             }
         }
     }

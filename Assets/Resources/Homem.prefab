@@ -660,13 +660,14 @@ MonoBehaviour:
   dot: {fileID: 6065611232297309586}
   canvasOptions: {fileID: 5070222273326197384}
   canvasHUD: {fileID: 7019202391493210990}
-  timeToRes: 3
   monster1: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
   monster2: {fileID: 4300002, guid: 7144acb9459793743bd1b60b10fe0d30, type: 3}
   monster1Controller: {fileID: 9100000, guid: 015979fdd826ce74188032b1d8a1818b, type: 2}
   monster2Controller: {fileID: 9100000, guid: 52f0115cd16258d4f811f28a1169ee74, type: 2}
   monsterRef: {fileID: 0}
-  sodeteste: 1
+  monstro1Escolhido: 0
+  monstro2Escolhido: 1
+  timeToRes: 3
   isRessing: 0
   isDead: 0
 --- !u!114 &1749391724279769570
@@ -1130,13 +1131,14 @@ MonoBehaviour:
   dot: {fileID: 0}
   canvasOptions: {fileID: 0}
   canvasHUD: {fileID: 0}
-  timeToRes: 0
   monster1: {fileID: 0}
   monster2: {fileID: 0}
   monster1Controller: {fileID: 0}
   monster2Controller: {fileID: 0}
   monsterRef: {fileID: 0}
-  sodeteste: 0
+  monstro1Escolhido: 0
+  monstro2Escolhido: 0
+  timeToRes: 0
   isRessing: 0
   isDead: 0
 --- !u!1 &2476485049105481246

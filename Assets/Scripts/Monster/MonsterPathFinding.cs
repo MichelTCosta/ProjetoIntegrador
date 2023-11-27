@@ -52,7 +52,7 @@ public class MonsterPathFinding : MonoBehaviour
         {
             int playersInServer = PhotonNetwork.PlayerList.Length;
             target = Random.Range(0, playersInServer);
-
+            return;
         }
         if (players[target].GetComponent<PlayerMisc>().isDead == false)//checa se o jogador está morto se não estiver continua perseguindo ele
         {
