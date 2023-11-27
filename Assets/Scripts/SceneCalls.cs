@@ -30,7 +30,14 @@ public class SceneCalls : MonoBehaviourPunCallbacks
         
     }
 
-
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        base.OnMasterClientSwitched(newMasterClient);
+        PhotonNetwork.Disconnect();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene("Loading");
+    }
 
 
 }
