@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class PlayerMisc : MonoBehaviour
 {
-
+    [SerializeField]
+    GameObject keyPrefab;
 
     [Header("Referencias para as cameras")]
     public GameObject jumpScareCam;
@@ -35,8 +36,8 @@ public class PlayerMisc : MonoBehaviour
     GameObject monsterRef;
 
     [Header("Monstro escolhido")]
-    public bool monstro1Escolhido;
-    public bool monstro2Escolhido;
+    [SerializeField]
+    string monsterchoose;
 
     //Configurações de ressucitação(Nao terminado)
     [Header("Configurações do res(não terminado)")]
@@ -51,7 +52,7 @@ public class PlayerMisc : MonoBehaviour
     PhotonView view;
     Charactermanager manager;
     PlayerMovement playerMovement;
-    
+    RaycastHit hit;
     // Start is called before the first frame update
     void Awake()
     {
@@ -64,14 +65,16 @@ public class PlayerMisc : MonoBehaviour
             dot.enabled = false; // desabilita o ponto central da tela
             monsterRef = GameObject.Find("Monstro").gameObject; // encontra a referencia do monstro na cena
             animatorController = monsterRef.GetComponent<RuntimeAnimatorController>(); //transforma o controlador do monstro em um variavel
-            if (monstro1Escolhido) //checa o monstro escolhido
+            monsterchoose = manager.monsterName;
+            keyPrefab = GameObject.Find("Key1");
+            if (monsterchoose == "Monstro 1") //checa o monstro escolhido
             {
              monsterRef.GetComponent<MeshFilter>().mesh = monster1; //troca o modelo do monstro
              animatorController = monster1Controller; //troca o animador do monstro
 
             }
 
-            if (monstro2Escolhido) //checa o monstro escolhido
+            if (monsterchoose == "Monstro 2") //checa o monstro escolhido
             {
                 monsterRef.GetComponent<MeshFilter>().mesh = monster2; //troca o modelo do monstro
                 animatorController = monster2Controller; //troca o animador do monstro
@@ -165,10 +168,9 @@ public class PlayerMisc : MonoBehaviour
 
     void DetectKey() //Detecta a chave quando olha para ela e libera pegar
     {
-        if (view.IsMine)
-        {
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //Cria um raycast na posição do mouse
-            RaycastHit hit;
+           
 
             if (Physics.Raycast(ray, out hit))
             {
@@ -187,23 +189,26 @@ public class PlayerMisc : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         Debug.Log("Works");
-                        view.RPC("KeyGotten", RpcTarget.All); //Chave uma função para todos os jogadores
-                        PhotonNetwork.Destroy(hit.transform.gameObject); // Destroi o objeto pego
+                        view.RPC("KeyGotten", RpcTarget.All);
+                        
                     }
 
                 }
 
 
             }
-        }
+        
     }
 
     [PunRPC]
-    void KeyGotten() //Função que atualiza os dados do monstro
+    void KeyGotten() // Função que atualiza os dados do monstro
     {
         monsterRef.GetComponent<MonsterBasics>().numberOfKeys++; // Aumenta o numero de chaves pegas
         monsterRef.GetComponent<MonsterBasics>().getKey = true; // Ativa o trigger que faz o monstro ficar irritado
+        PhotonNetwork.Destroy(keyPrefab);
     }
+
+
 
 
 

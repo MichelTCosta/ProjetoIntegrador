@@ -39,30 +39,31 @@ public class MonsterPathFinding : MonoBehaviour
     {
         numberOfKeys = GetComponent<MonsterBasics>().numberOfKeys;//numero de chaves que os jogadores tem
         players = manager.playerList; //lista de jogadores em gameobjects
-        view.RPC("FollowPlayer", RpcTarget.All); //Executa a função para todos os jogadores
+        view.RPC("FollowPlayer", RpcTarget.AllViaServer); //Executa a função para todos os jogadores
         ChoosePlayer();
-
+        transform.LookAt(players[target].transform.position);
 
     }
 
     [PunRPC]
     void FollowPlayer() //Função que faz o monstro checar se a posição do jogador mudou e avançar para a nova posição
     {
+
         if (players[target].GetComponent<PlayerMisc>().isDead == true ) //checa se o player que o monstro está perseguindo morreu e se estiver morto e o monstro estiver no lvl4 irá atras de outro direto
         {
             int playersInServer = PhotonNetwork.PlayerList.Length;
             target = Random.Range(0, playersInServer);
-            return;
+            
         }
+
         if (players[target].GetComponent<PlayerMisc>().isDead == false)//checa se o jogador está morto se não estiver continua perseguindo ele
         {
 
             agent.SetDestination(players[target].gameObject.transform.position); //coloca um destino de pathfinding para o monstro
+            
         }
 
-
-
-
+        return;
 
     }
 
@@ -72,11 +73,12 @@ public class MonsterPathFinding : MonoBehaviour
         if (switchTarget <= 0)
         {
             switchTarget = switchTargetTime; 
-            int playersInServer = PhotonNetwork.PlayerList.Length; //pega o numero de player conectados na sala
-            target = Random.Range(0, playersInServer); // escolhe aleatoriamente um novo jogador
+            int playersInServer = PhotonNetwork.PlayerList.Length; // Pega o numero de player conectados na sala
+            target = Random.Range(0, playersInServer); // Escolhe aleatoriamente um novo jogador
             
 
         }
+
         if (switchTarget > 0)
         {
             switchTarget -= Time.deltaTime;

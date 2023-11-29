@@ -655,6 +655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0727dda386ed204895aae523f74ba9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyPrefab: {fileID: 2502902861964140530, guid: b7b85771c2d081c4481f6c94f723c4d3, type: 3}
   jumpScareCam: {fileID: 6743416723263211995}
   normalCam: {fileID: 684146074507373431}
   dot: {fileID: 6065611232297309586}
@@ -665,8 +666,7 @@ MonoBehaviour:
   monster1Controller: {fileID: 9100000, guid: 015979fdd826ce74188032b1d8a1818b, type: 2}
   monster2Controller: {fileID: 9100000, guid: 52f0115cd16258d4f811f28a1169ee74, type: 2}
   monsterRef: {fileID: 0}
-  monstro1Escolhido: 0
-  monstro2Escolhido: 1
+  monsterchoose: 
   timeToRes: 3
   isRessing: 0
   isDead: 0
@@ -1126,6 +1126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0727dda386ed204895aae523f74ba9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyPrefab: {fileID: 0}
   jumpScareCam: {fileID: 6743416723263211995}
   normalCam: {fileID: 684146074507373431}
   dot: {fileID: 0}
@@ -1136,8 +1137,7 @@ MonoBehaviour:
   monster1Controller: {fileID: 0}
   monster2Controller: {fileID: 0}
   monsterRef: {fileID: 0}
-  monstro1Escolhido: 0
-  monstro2Escolhido: 0
+  monsterchoose: 
   timeToRes: 0
   isRessing: 0
   isDead: 0

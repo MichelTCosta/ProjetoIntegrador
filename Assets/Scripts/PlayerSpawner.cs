@@ -9,7 +9,9 @@ public class PlayerSpawner : MonoBehaviour
     //Refencias
     public GameObject prefabHomem;
     public GameObject prefabMulher;
-    
+
+
+
     Charactermanager manager;
     
     // Start is called before the first frame update

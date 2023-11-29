@@ -7,10 +7,12 @@ using Photon.Realtime;
 public class SceneCalls : MonoBehaviourPunCallbacks
 {
     PhotonView view;
+    Charactermanager manager;
     // Start is called before the first frame update
     void Start()
     {
         view = GetComponentInParent<PhotonView>();
+        manager = GameObject.FindAnyObjectByType<Charactermanager>();
     }
 
     // Update is called once per frame
@@ -24,6 +26,7 @@ public class SceneCalls : MonoBehaviourPunCallbacks
     {
         base.OnLeftRoom();
         PhotonNetwork.Disconnect();
+        Destroy(manager.gameObject);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("Loading");
@@ -34,6 +37,7 @@ public class SceneCalls : MonoBehaviourPunCallbacks
     {
         base.OnMasterClientSwitched(newMasterClient);
         PhotonNetwork.Disconnect();
+        Destroy(manager.gameObject);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         SceneManager.LoadScene("Loading");
