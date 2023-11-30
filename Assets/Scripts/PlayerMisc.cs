@@ -62,7 +62,10 @@ public class PlayerMisc : MonoBehaviour
             manager = GameObject.FindObjectOfType<Charactermanager>(); //Encontra a referencia do manager
             playerMovement = GetComponent<PlayerMovement>(); // Encontra a referencia de movimentação do jogador
             timeToResCounter = timeToRes; // Guarda o tempo de ressucitar
-            dot.enabled = false; // desabilita o ponto central da tela
+            if(Camera.main != null)
+            {
+                dot.enabled = false; // desabilita o ponto central da tela
+            }
             monsterRef = GameObject.Find("Monstro").gameObject; // encontra a referencia do monstro na cena
             animatorController = monsterRef.GetComponent<RuntimeAnimatorController>(); //transforma o controlador do monstro em um variavel
             monsterchoose = manager.monsterName;
@@ -95,8 +98,8 @@ public class PlayerMisc : MonoBehaviour
         {
             normalCam.SetActive(false); //desabilita camera normal
             jumpScareCam.SetActive(true); //ativa a camera de jumpscare
-            playerMovement.canMove = false; //Trava a movimentação do jogador
-            isDead = true; //Refencia para poder reviver o jogador
+
+            
 
         }
 
@@ -117,39 +120,36 @@ public class PlayerMisc : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        //if (view.IsMine)
-        //{
-        //if (other.CompareTag("Player") && other.gameObject != this.gameObject);
-        //        {
-        //    Debug.Log("Checagem de colisor");
-        //            if (Input.GetKeyDown(KeyCode.E) && isRessing == false)
-        //            {
-        //        Debug.Log("Checagem de input");
-        //                if(timeToResCounter > 0)
-        //                {
-        //                    timeToResCounter -= Time.deltaTime;
-        //                    isRessing = true;
-        //                }
-        //
-        //
-        //                if(timeToResCounter <= 0)
-        //                {
-        //                    isRessing = false;
-        //                    other.GetComponent<PlayerMisc>().isDead = false;
-        //                    other.GetComponent<PlayerMovement>().canMove = true;
-        //                    timeToResCounter = timeToRes;
-        //                }
-        //                    
-        //            }
-        //        if (Input.GetKeyUp(KeyCode.E))
-        //        {
-        //            timeToResCounter = timeToRes;
-        //            isRessing = false;
-        //
-        //        }
-        //        }
-        //
-        //}
+       
+        if (other.CompareTag("Player") && other.gameObject != this.gameObject);
+                {
+            Debug.Log("Checagem de colisor");
+                    if (Input.GetKeyDown(KeyCode.E) && other.GetComponent<PlayerMisc>().isDead)
+                    {
+                    //isRessing = true;
+                    Debug.Log("Checagem de input");
+                other.GetComponent<PlayerMisc>().isDead = false;
+                other.GetComponent<PlayerMovement>().canMove = true;
+
+            }
+     
+                }
+            if(isRessing)
+            {
+
+            timeToResCounter -= Time.deltaTime;
+
+            }
+    
+    
+    if(timeToResCounter <= 0)
+    {
+        isRessing = false;
+        other.GetComponent<PlayerMisc>().isDead = false;
+        other.GetComponent<PlayerMovement>().canMove = true;
+        timeToResCounter = timeToRes;
+    }
+        
 
         
     }
@@ -168,9 +168,12 @@ public class PlayerMisc : MonoBehaviour
 
     void DetectKey() //Detecta a chave quando olha para ela e libera pegar
     {
+        
+        if(Camera.main != null)
+        {
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //Cria um raycast na posição do mouse
-           
+
 
             if (Physics.Raycast(ray, out hit))
             {
@@ -197,6 +200,14 @@ public class PlayerMisc : MonoBehaviour
 
 
             }
+
+        }
+        else
+        {
+            return;
+        }
+           
+
         
     }
 

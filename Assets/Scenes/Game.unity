@@ -2471,6 +2471,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3497008127082332762, guid: 520921b48cc540a4fafec8f5a28ca20d, type: 3}
+      propertyPath: switchTargetTime
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3497008127082332765, guid: 520921b48cc540a4fafec8f5a28ca20d, type: 3}
       propertyPath: m_Name
       value: Monstro
