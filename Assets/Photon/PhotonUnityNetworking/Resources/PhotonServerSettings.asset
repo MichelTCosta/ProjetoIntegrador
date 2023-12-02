@@ -42,6 +42,7 @@ MonoBehaviour:
   - CloseRoom
   - KeyGotten
   - KeyUpdate
+  - Ressucite
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

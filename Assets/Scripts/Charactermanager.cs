@@ -23,7 +23,7 @@ public class Charactermanager : MonoBehaviour
     public static Charactermanager instance;
     
 
-    public List<GameObject> playerList;//Lista de gameobjects dos jogadores
+    public List<GameObject> playerList; // Lista de gameobjects dos jogadores
 
     // Start is called before the first frame update
     void Awake()
@@ -48,13 +48,13 @@ public class Charactermanager : MonoBehaviour
     {
         if (PhotonNetwork.CurrentRoom != null)
         {
-            playerInServer = PhotonNetwork.CurrentRoom.PlayerCount; //Pega o numero de jogadores na sala
+            playerInServer = PhotonNetwork.CurrentRoom.PlayerCount; // Pega o numero de jogadores na sala
         }
 
-        if(isOnGame == false) //checa se os jogadores ja estão em jogo e para de pegar informaçoes que nao sao mais necessarias
-        {
-            PhotonNetwork.NickName = nome.text; // atribui o nome ao jogador
-            boneco = character.options[character.value].text; //atribui o personagem escolhido 
+        if(isOnGame == false) // Checa se os jogadores ja estão em jogo e para de pegar informaçoes que nao sao mais necessarias
+        { 
+            PhotonNetwork.NickName = nome.text; // Atribui o nome ao jogador
+            boneco = character.options[character.value].text; // Atribui o personagem escolhido 
             monsterName = monster.options[monster.value].text;
         }
 

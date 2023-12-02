@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    //Refencias
+    //Referencias
     public GameObject prefabHomem;
     public GameObject prefabMulher;
 
@@ -21,7 +21,7 @@ public class PlayerSpawner : MonoBehaviour
 
 
 
-        //Spawna os jogadores dependendo do genero escolhido
+        // Spawna os jogadores dependendo do genero escolhido
         if(manager.boneco == "Homem")
         {
             PhotonNetwork.Instantiate(prefabHomem.name, this.transform.position, Quaternion.identity);

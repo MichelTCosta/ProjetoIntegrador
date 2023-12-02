@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerMisc : MonoBehaviour
 {
+    [Header("Referencias para as chaves")]
     [SerializeField]
     GameObject keyPrefab;
 
@@ -39,20 +40,22 @@ public class PlayerMisc : MonoBehaviour
     [SerializeField]
     string monsterchoose;
 
-    //Configurações de ressucitação(Nao terminado)
-    [Header("Configurações do res(não terminado)")]
+    // Configurações de ressucitação(Não terminado)
+    [Header("Configurações do res(Não terminado)")]
     [SerializeField]
     float timeToRes;
+
     float timeToResCounter;
     public bool isRessing;
     public bool isDead;
 
-    //Referencias gerais
+    // Referencias gerais
     RuntimeAnimatorController animatorController;
     PhotonView view;
     Charactermanager manager;
     PlayerMovement playerMovement;
     RaycastHit hit;
+    PhotonView otherPlayerView;
     // Start is called before the first frame update
     void Awake()
     {
@@ -64,27 +67,25 @@ public class PlayerMisc : MonoBehaviour
             timeToResCounter = timeToRes; // Guarda o tempo de ressucitar
             if(Camera.main != null)
             {
-                dot.enabled = false; // desabilita o ponto central da tela
+                dot.enabled = false; // Desabilita o ponto central da tela
             }
-            monsterRef = GameObject.Find("Monstro").gameObject; // encontra a referencia do monstro na cena
-            animatorController = monsterRef.GetComponent<RuntimeAnimatorController>(); //transforma o controlador do monstro em um variavel
+            monsterRef = GameObject.Find("Monstro").gameObject; // Encontra a referencia do monstro na cena
+            animatorController = monsterRef.GetComponent<RuntimeAnimatorController>(); // Transforma o controlador do monstro em um variavel
             monsterchoose = manager.monsterName;
             keyPrefab = GameObject.Find("Key1");
-            if (monsterchoose == "Monstro 1") //checa o monstro escolhido
+            
+            if (monsterchoose == "Monstro 1") // Checa o monstro escolhido
             {
-             monsterRef.GetComponent<MeshFilter>().mesh = monster1; //troca o modelo do monstro
-             animatorController = monster1Controller; //troca o animador do monstro
-
+                monsterRef.GetComponent<MeshFilter>().mesh = monster1; // Troca o modelo do monstro
+                animatorController = monster1Controller; // Troca o animador do monstro
             }
 
-            if (monsterchoose == "Monstro 2") //checa o monstro escolhido
+            if (monsterchoose == "Monstro 2") // Checa o monstro escolhido
             {
-                monsterRef.GetComponent<MeshFilter>().mesh = monster2; //troca o modelo do monstro
-                animatorController = monster2Controller; //troca o animador do monstro
+                monsterRef.GetComponent<MeshFilter>().mesh = monster2; // Troca o modelo do monstro
+                animatorController = monster2Controller; // Troca o animador do monstro
             }
         }
-        
-
     }
 
     private void Update()
@@ -94,76 +95,36 @@ public class PlayerMisc : MonoBehaviour
 
     public void JumpScare()
     {
-        if (view.IsMine)//Checa se o cliente que foi chamado é o do jogador
+        if (view.IsMine)// Checa se o cliente que foi chamado é o do jogador
         {
-            normalCam.SetActive(false); //desabilita camera normal
-            jumpScareCam.SetActive(true); //ativa a camera de jumpscare
+            normalCam.SetActive(false); // Desabilita camera normal
+            jumpScareCam.SetActive(true); // Ativa a camera de jumpscare
 
             
 
         }
 
     }
-    public void ResetCam()//função que reset a camera normal, é ativada dentro da animação do jumpscare
+    public void ResetCam()// Função que reset a camera normal, é ativada dentro da animação do jumpscare
     {
         if (view.IsMine)
         {
 
-            jumpScareCam.SetActive(false); //desativa a camera de jumpscare
-            normalCam.SetActive(true); // ativa a camera normal
+            jumpScareCam.SetActive(false); // Desativa a camera de jumpscare
+            normalCam.SetActive(true); // Ativa a camera normal
 
-            
         }
 
     }
 
 
-    private void OnTriggerStay(Collider other)
+    [PunRPC]
+    void Ressucite()
     {
-       
-        if (other.CompareTag("Player") && other.gameObject != this.gameObject);
-                {
-            Debug.Log("Checagem de colisor");
-                    if (Input.GetKeyDown(KeyCode.E) && other.GetComponent<PlayerMisc>().isDead)
-                    {
-                    //isRessing = true;
-                    Debug.Log("Checagem de input");
-                other.GetComponent<PlayerMisc>().isDead = false;
-                other.GetComponent<PlayerMovement>().canMove = true;
-
-            }
-     
-                }
-            if(isRessing)
-            {
-
-            timeToResCounter -= Time.deltaTime;
-
-            }
-    
-    
-    if(timeToResCounter <= 0)
-    {
-        isRessing = false;
-        other.GetComponent<PlayerMisc>().isDead = false;
-        other.GetComponent<PlayerMovement>().canMove = true;
-        timeToResCounter = timeToRes;
+        isDead = false;
+        GetComponent<PlayerMovement>().canMove = true;
     }
-        
 
-        
-    }
-    //private void OnTriggerExit(Collider other) 
-    //{
-    //
-    //        if(other.CompareTag("Player") && other.GetComponent<PlayerMisc>().isDead)
-    //        {
-    //            timeToResCounter = timeToRes;
-    //            isRessing = false;
-    //        } 
-    //
-    //    
-    //}
 
 
     void DetectKey() //Detecta a chave quando olha para ela e libera pegar
@@ -172,14 +133,14 @@ public class PlayerMisc : MonoBehaviour
         if(Camera.main != null)
         {
 
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //Cria um raycast na posição do mouse
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // Cria um raycast na posição do mouse
 
 
             if (Physics.Raycast(ray, out hit))
             {
              
 
-               if (hit.transform.tag != "Key") //Checa se o raycast encontrou a chave
+               if (hit.transform.tag != "Key" || hit.transform.tag != "Player") // Checa se o raycast encontrou a chave
                {
                     dot.enabled = false; // Desabilita o ponto central
                }
@@ -188,7 +149,7 @@ public class PlayerMisc : MonoBehaviour
 
                 if (hit.collider.tag == "Key" && Physics.Raycast(ray, out hit, 2f)) // Checa se o raycast acertou uma chave(pode ser trocado para item se necessario)
                 {
-                    dot.enabled = true; //Ativa o ponto central da tela
+                    dot.enabled = true; // Ativa o ponto central da tela
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         Debug.Log("Works");
@@ -196,6 +157,17 @@ public class PlayerMisc : MonoBehaviour
                         
                     }
 
+                }
+                if(hit.collider.tag == "Player" && hit.transform.GetComponent<PhotonView>() != null && Physics.Raycast(ray, out hit, 2f))
+                {
+                    dot.enabled = true;
+                    otherPlayerView = hit.transform.GetComponent<PhotonView>();
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        view.RPC("Ressucite", otherPlayerView.Controller);
+                        hit.transform.GetComponent<PlayerMisc>().isDead = false;
+                        hit.transform.GetComponent<PlayerMovement>().canMove = true;
+                    }
                 }
 
 
@@ -218,9 +190,4 @@ public class PlayerMisc : MonoBehaviour
         monsterRef.GetComponent<MonsterBasics>().getKey = true; // Ativa o trigger que faz o monstro ficar irritado
         PhotonNetwork.Destroy(keyPrefab);
     }
-
-
-
-
-
 }

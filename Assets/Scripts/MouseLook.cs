@@ -21,7 +21,7 @@ public class MouseLook : MonoBehaviour
         if (view.IsMine)
         {
             playerBody= transform.parent;
-            keyBinding = GetComponentInParent<KeyBinding>(); // pega referencia de outro script
+            keyBinding = GetComponentInParent<KeyBinding>(); // Pega referencia de outro script
 
             controls = new PlayerControls();
             Cursor.lockState = CursorLockMode.Locked;
@@ -66,4 +66,6 @@ public class MouseLook : MonoBehaviour
     {
       controls.Disable();
     }
+
+
 }

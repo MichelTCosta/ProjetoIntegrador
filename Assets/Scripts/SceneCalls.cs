@@ -22,7 +22,7 @@ public class SceneCalls : MonoBehaviourPunCallbacks
     }
 
 
-    public override void OnLeftRoom() //Botão para o jogador voltar para o lobby
+    public override void OnLeftRoom() // Botão para o jogador voltar para o lobby
     {
         base.OnLeftRoom();
         PhotonNetwork.Disconnect();

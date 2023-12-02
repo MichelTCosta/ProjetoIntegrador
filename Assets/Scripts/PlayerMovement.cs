@@ -163,6 +163,7 @@ public class PlayerMovement : MonoBehaviour
 
 
             bool hit = Physics.Raycast(transform.position, Vector3.up, roofDetectionDistance ,whatIsGround);
+
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             playerCamera.transform.position = crouchCameraPos.transform.position;
