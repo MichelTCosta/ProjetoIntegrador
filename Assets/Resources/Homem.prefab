@@ -667,8 +667,8 @@ MonoBehaviour:
   monster2Controller: {fileID: 9100000, guid: 52f0115cd16258d4f811f28a1169ee74, type: 2}
   monsterRef: {fileID: 0}
   monsterchoose: 
-  timeToRes: 3
-  isRessing: 0
+  timeToRes: 20
+  canBeRessed: 0
   isDead: 0
 --- !u!114 &1749391724279769570
 MonoBehaviour:
@@ -1139,7 +1139,7 @@ MonoBehaviour:
   monsterRef: {fileID: 0}
   monsterchoose: 
   timeToRes: 0
-  isRessing: 0
+  canBeRessed: 0
   isDead: 0
 --- !u!1 &2476485049105481246
 GameObject:

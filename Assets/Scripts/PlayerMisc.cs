@@ -46,7 +46,8 @@ public class PlayerMisc : MonoBehaviour
     float timeToRes;
 
     float timeToResCounter;
-    public bool isRessing;
+    public bool canBeRessed;
+
     public bool isDead;
 
     // Referencias gerais
@@ -78,12 +79,18 @@ public class PlayerMisc : MonoBehaviour
             {
                 monsterRef.GetComponent<MeshFilter>().mesh = monster1; // Troca o modelo do monstro
                 animatorController = monster1Controller; // Troca o animador do monstro
+                monsterRef.GetComponent<MeshCollider>().sharedMesh = null;
+                monsterRef.GetComponent<MeshCollider>().sharedMesh = monster1;
+                monsterRef.GetComponent<MonsterPathFinding>().agent.baseOffset = 1f;
             }
 
             if (monsterchoose == "Monstro 2") // Checa o monstro escolhido
             {
                 monsterRef.GetComponent<MeshFilter>().mesh = monster2; // Troca o modelo do monstro
                 animatorController = monster2Controller; // Troca o animador do monstro
+                monsterRef.GetComponent<MeshCollider>().sharedMesh = null;
+                monsterRef.GetComponent<MeshCollider>().sharedMesh = monster2;
+                monsterRef.GetComponent<MonsterPathFinding>().agent.baseOffset = 0.03f;
             }
         }
     }
@@ -91,6 +98,18 @@ public class PlayerMisc : MonoBehaviour
     private void Update()
     {
         DetectKey();
+       
+       
+       
+       
+       
+       
+       
+       
+
+
+
+
     }
 
     public void JumpScare()
@@ -123,6 +142,7 @@ public class PlayerMisc : MonoBehaviour
     {
         isDead = false;
         GetComponent<PlayerMovement>().canMove = true;
+          
     }
 
 
@@ -143,6 +163,7 @@ public class PlayerMisc : MonoBehaviour
                if (hit.transform.tag != "Key" || hit.transform.tag != "Player") // Checa se o raycast encontrou a chave
                {
                     dot.enabled = false; // Desabilita o ponto central
+
                }
 
 
@@ -162,13 +183,25 @@ public class PlayerMisc : MonoBehaviour
                 {
                     dot.enabled = true;
                     otherPlayerView = hit.transform.GetComponent<PhotonView>();
+                    PlayerMisc playermisc = hit.transform.GetComponent<PlayerMisc>();
+                    PlayerMovement playerMovement = hit.transform.GetComponent<PlayerMovement>();
                     if (Input.GetKeyDown(KeyCode.E))
                     {
+
+
                         view.RPC("Ressucite", otherPlayerView.Controller);
-                        hit.transform.GetComponent<PlayerMisc>().isDead = false;
-                        hit.transform.GetComponent<PlayerMovement>().canMove = true;
-                    }
+                        playermisc.isDead = false;
+                        playerMovement.canMove = true;
+                
+                     }
+                  
+
+                    
+                 
+                    
                 }
+
+
 
 
             }

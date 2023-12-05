@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3497008127082332761}
   - component: {fileID: 3497008127082332760}
   - component: {fileID: 3497008127082332767}
-  - component: {fileID: 3497008127082332766}
   - component: {fileID: 3497008127082332763}
   - component: {fileID: 3497008127082332762}
   - component: {fileID: 3497008127082332837}
@@ -19,6 +18,7 @@ GameObject:
   - component: {fileID: 3497008127082332838}
   - component: {fileID: 531848070564527650}
   - component: {fileID: 3188423560430206471}
+  - component: {fileID: -986057357915531716}
   m_Layer: 0
   m_Name: Monstro
   m_TagString: Untagged
@@ -91,20 +91,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3497008127082332766
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3497008127082332765}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &3497008127082332763
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -229,3 +215,17 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.78
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!64 &-986057357915531716
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3497008127082332765}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}

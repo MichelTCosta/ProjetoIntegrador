@@ -7,7 +7,7 @@ using Photon.Pun;
 public class MonsterPathFinding : MonoBehaviour
 {
     Charactermanager manager;
-    NavMeshAgent agent; // Usando para o monstro encontrar o caminho
+    public NavMeshAgent agent; // Usando para o monstro encontrar o caminho
 
     [SerializeField]
     List<GameObject> players; // Referencias paras os players
@@ -46,7 +46,7 @@ public class MonsterPathFinding : MonoBehaviour
        ChoosePlayer();
         lookPos.x = players[target].transform.position.x;
         transform.LookAt(lookPos);
-
+        
     }
 
     [PunRPC]
