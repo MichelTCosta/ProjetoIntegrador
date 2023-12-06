@@ -98,18 +98,9 @@ public class PlayerMisc : MonoBehaviour
     private void Update()
     {
         DetectKey();
+        ResTimer();
        
        
-       
-       
-       
-       
-       
-       
-
-
-
-
     }
 
     public void JumpScare()
@@ -126,13 +117,12 @@ public class PlayerMisc : MonoBehaviour
     }
     public void ResetCam()// Função que reset a camera normal, é ativada dentro da animação do jumpscare
     {
-        if (view.IsMine)
-        {
 
-            jumpScareCam.SetActive(false); // Desativa a camera de jumpscare
+
             normalCam.SetActive(true); // Ativa a camera normal
+            jumpScareCam.SetActive(false); // Desativa a camera de jumpscare
 
-        }
+        
 
     }
 
@@ -142,7 +132,7 @@ public class PlayerMisc : MonoBehaviour
     {
         isDead = false;
         GetComponent<PlayerMovement>().canMove = true;
-          
+        canBeRessed = false;
     }
 
 
@@ -160,7 +150,7 @@ public class PlayerMisc : MonoBehaviour
             {
              
 
-               if (hit.transform.tag != "Key" || hit.transform.tag != "Player") // Checa se o raycast encontrou a chave
+               if (hit.transform.CompareTag("Key") == false || hit.transform.CompareTag("Player") == false)  // Checa se o raycast encontrou a chave
                {
                     dot.enabled = false; // Desabilita o ponto central
 
@@ -168,7 +158,7 @@ public class PlayerMisc : MonoBehaviour
 
 
 
-                if (hit.collider.tag == "Key" && Physics.Raycast(ray, out hit, 2f)) // Checa se o raycast acertou uma chave(pode ser trocado para item se necessario)
+                if (hit.collider.CompareTag("Key") && Physics.Raycast(ray, out hit, 2f)) // Checa se o raycast acertou uma chave(pode ser trocado para item se necessario)
                 {
                     dot.enabled = true; // Ativa o ponto central da tela
                     if (Input.GetKeyDown(KeyCode.E))
@@ -179,21 +169,23 @@ public class PlayerMisc : MonoBehaviour
                     }
 
                 }
-                if(hit.collider.tag == "Player" && hit.transform.GetComponent<PhotonView>() != null && Physics.Raycast(ray, out hit, 2f))
+
+
+                if(hit.collider.CompareTag("Player")&& hit.transform.GetComponent<PhotonView>() != null && Physics.Raycast(ray, out hit, 2f))
                 {
                     dot.enabled = true;
                     otherPlayerView = hit.transform.GetComponent<PhotonView>();
                     PlayerMisc playermisc = hit.transform.GetComponent<PlayerMisc>();
                     PlayerMovement playerMovement = hit.transform.GetComponent<PlayerMovement>();
-                    if (Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetKeyDown(KeyCode.E) && playermisc.canBeRessed)
                     {
 
 
                         view.RPC("Ressucite", otherPlayerView.Controller);
                         playermisc.isDead = false;
                         playerMovement.canMove = true;
-                
-                     }
+
+                    }
                   
 
                     
@@ -222,5 +214,23 @@ public class PlayerMisc : MonoBehaviour
         monsterRef.GetComponent<MonsterBasics>().numberOfKeys++; // Aumenta o numero de chaves pegas
         monsterRef.GetComponent<MonsterBasics>().getKey = true; // Ativa o trigger que faz o monstro ficar irritado
         PhotonNetwork.Destroy(keyPrefab);
+    }
+
+
+    public void ResTimer()
+    {
+       if(isDead)
+        {
+            if(timeToRes > 0)
+            {
+                timeToRes -= Time.deltaTime;
+            }
+            if(timeToRes <= 0)
+            {
+                canBeRessed = true;
+                timeToRes = timeToResCounter;
+            }
+        }
+
     }
 }

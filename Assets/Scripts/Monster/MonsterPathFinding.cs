@@ -42,10 +42,9 @@ public class MonsterPathFinding : MonoBehaviour
         players = manager.playerList; // Lista de jogadores em gameobjects
          //  playersInServer = PhotonNetwork.PlayerList.Length;
         view.RPC("FollowPlayer", RpcTarget.AllViaServer); // Executa a função para todos os jogadores
-
-       ChoosePlayer();
-        lookPos.x = players[target].transform.position.x;
-        transform.LookAt(lookPos);
+        view.RPC("ChoosePlayer", RpcTarget.MasterClient);
+ 
+        
         
     }
 
@@ -56,7 +55,8 @@ public class MonsterPathFinding : MonoBehaviour
         if (players[target].GetComponent<PlayerMisc>().isDead == false)// Checa se o jogador está morto se não estiver continua perseguindo ele
         {
 
-            agent.SetDestination(players[target].gameObject.transform.position); // Coloca um destino de pathfinding para o monstro
+            agent.SetDestination(players[target].gameObject.transform.position);
+            // Coloca um destino de pathfinding para o monstro
             
         }
         if (players[target].GetComponent<PlayerMisc>().isDead == true ) // Checa se o player que o monstro está perseguindo morreu e se estiver morto e o monstro estiver no lvl4 irá atras de outro direto
@@ -72,6 +72,7 @@ public class MonsterPathFinding : MonoBehaviour
     }
 
 
+    [PunRPC]
     void ChoosePlayer()// Escolhe um jogador para perseguir a cada algum tempo
     {
         if (switchTarget <= 0)
@@ -109,6 +110,8 @@ public class MonsterPathFinding : MonoBehaviour
             }
         }
     }
+
+
 
 
 
