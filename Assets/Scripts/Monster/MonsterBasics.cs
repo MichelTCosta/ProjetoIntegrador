@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class MonsterBasics : MonoBehaviour
 {
 
@@ -9,9 +9,12 @@ public class MonsterBasics : MonoBehaviour
     public int numberOfKeys; //Aumentar toda vez que pegar um chave
 
     Animator animator;
+
+    PhotonView view;
     // Start is called before the first frame update
     void Start()
     {
+        view = GetComponent<PhotonView>();
         animator = GetComponent<Animator>();
     }
 
@@ -23,8 +26,19 @@ public class MonsterBasics : MonoBehaviour
 
         if (getKey)//Checa se uma chave foi pega
         {
-            getKey = false;
-            animator.SetTrigger("GetAKey"); //ativa um trigger no animator que faz com que o monstro entre em modo enfurecido
+            view.RPC("RefreshKeys", RpcTarget.AllViaServer);
         }
     }
+
+
+    [PunRPC]
+    void RefreshKeys()
+    {
+            animator.SetTrigger("GetAKey"); //ativa um trigger no animator que faz com que o monstro entre em modo enfurecido
+            getKey = false;
+
+    }
+
+
+
 }

@@ -164,14 +164,20 @@ public class PlayerMovement : MonoBehaviour
 
             bool hit = Physics.Raycast(transform.position, Vector3.up, roofDetectionDistance ,whatIsGround);
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftControl) && isRunning == false)
         {
             playerCamera.transform.position = crouchCameraPos.transform.position;
             isCrouch = true;
             characterController.height = crouchHeight;
             characterController.center = new Vector3(0, croucYHeight, 0);
         }
-
+        if(Input.GetKey(KeyCode.LeftControl) == false && hit == false)
+        {
+            playerCamera.transform.position = normalCameraPos.transform.position;
+            isCrouch = false;
+            characterController.height = baseHeight;
+            characterController.center = new Vector3(0, baseYHeight, 0);
+        }
 
 
         if (Input.GetKeyUp(KeyCode.LeftControl) && hit == false)

@@ -164,7 +164,7 @@ public class PlayerMisc : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         Debug.Log("Works");
-                        view.RPC("KeyGotten", RpcTarget.All);
+                        view.RPC("KeyGotten", RpcTarget.AllViaServer);
                         
                     }
 
